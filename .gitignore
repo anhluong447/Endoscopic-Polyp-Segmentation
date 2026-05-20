@@ -1,0 +1,27 @@
+# Python compilation files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Training checkpoints and outputs
+*.pth
+*.pt
+predicted_masks/
+output.csv
+
+# Weights & Biases logs
+wandb/
+
+# Local OS files
+.DS_Store
+Thumbs.db

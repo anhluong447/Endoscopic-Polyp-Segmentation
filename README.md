@@ -43,9 +43,57 @@ While testing locally, the custom `CEDiceLoss` proved highly effective at forcin
 
 Visualizing the model's predictive capabilities on unseen test data, demonstrating the effectiveness of the custom Res-UNet and CEDiceLoss in isolating polyp regions.
 
-## 📂 Kaggle Directory Structure
-The data loaders are explicitly configured for the Kaggle environment paths:
-* **Training Data:** `/kaggle/input/bkai-igh-neopolyp/train/train/`
-* **Training Ground Truth:** `/kaggle/input/bkai-igh-neopolyp/train_gt/train_gt/`
-* **Testing Data:** `/kaggle/input/bkai-igh-neopolyp/test/test/`
-* **Outputs:** Predicted masks are saved to `/kaggle/working/predicted_masks/` and the final submission to `/kaggle/working/output.csv`.
+## 📂 Project Structure
+This project is organized as follows:
+* **`src/`**: Contains the core Python modules.
+  * `dataset.py`: PyTorch datasets and transformations.
+  * `models.py`: Custom ResUNet architecture implementation.
+  * `loss.py`: Custom hybrid CEDiceLoss definition.
+  * `train.py`: Model training loop.
+  * `inference.py`: Mask prediction and RLE submission generation.
+  * `utils.py`: Checkpoint saving/loading, weights initialization, and RLE helper functions.
+* **`main.py`**: Command-line entrypoint for training and running inference.
+* **`requirements.txt`**: List of Python dependencies.
+* **`.gitignore`**: Excludes virtual environments, caches, model weights, and outputs.
+
+---
+
+## 🚀 Running the Project Locally
+
+### 1. Setup Virtual Environment & Install Dependencies
+First, create a virtual environment, activate it, and install the required libraries:
+
+```bash
+# Create virtual environment
+python -m venv .venv
+
+# Activate virtual environment
+# Windows (PowerShell):
+.venv\Scripts\Activate.ps1
+# Windows (CMD):
+.venv\Scripts\activate.bat
+# Linux/macOS:
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+### 2. Training the Model
+Use the `train` command to train the model. You must specify the paths to the training images and ground-truth masks:
+
+```bash
+python main.py train --images-path "path/to/train/images" --masks-path "path/to/train_gt/masks" --epochs 30 --batch-size 12 --checkpoint-path "unet_model.pth"
+```
+
+Use `python main.py train --help` to see all customizable arguments (e.g. learning rate, device, pretrained model path, and Weights & Biases logging configuration).
+
+### 3. Running Inference & Submission Export
+Use the `inference` command to predict segmentation masks on the test dataset and export them to Run-Length Encoding (RLE) format for competition submission:
+
+```bash
+python main.py inference --test-images-path "path/to/test/images" --model-path "unet_model.pth" --output-dir "predicted_masks" --submission-path "output.csv"
+```
+
+Use `python main.py inference --help` to check all configuration options.
+
